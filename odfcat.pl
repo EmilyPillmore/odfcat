@@ -25,7 +25,6 @@ sub init {
 			fi;
 			echo '$0 :: Unzipping contents ... ';
 			unzip $file -d ~/.odfcat;
-			chmod 777 -R ~/.odfcat;
 			
 		fi;);
 	my %xml = \&main();
