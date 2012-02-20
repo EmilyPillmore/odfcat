@@ -8,10 +8,10 @@ use Pod::Usage;
 $|++;
 my $verbose = 0;
 my ($help, $man);
-Getopt::Long::GetOptions ("quiet" => \$verbose,
-						  "verbose" => sub{$verbose = 1;},
-						  "help" => \$help,
-						  "man" => \$man);
+Getopt::Long::GetOptions ( "quiet" => \$verbose,
+			   "verbose" => sub{$verbose = 1;},
+			   "help" => \$help,
+			   "man" => \$man );
 						  			
 Pod::Usage::pod2usage( -verbose => 1 ) if ($help);
 Pod::Usage::pod2usage( -verbose => 2 ) if ($man);	  
@@ -72,8 +72,7 @@ sub main {
 # -------------- Content printing is available, but not recommended for large documents --------------- #		
 
 		print "Print content? [Y/n]: ";
-		my $in = <STDIN>;
-		chomp($in);
+		chomp(my $in = <STDIN>);
 		if ($in eq "Y") {
 			print "Printing Content :: \n\t" . $content->{'office:body'}->{'office:text'}->{'text:p'}->{'content'} . "\n";
 		}
