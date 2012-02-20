@@ -13,7 +13,8 @@ our $result = GetOptions ("quiet" => \$verbose,
 my $file = $ARGV[0];
 print 'odfcat::Fetching - ' . $file . "\n";
 &init();
-					  	 
+
+# ------------ Fetches file and checks to make sure it exists, then Unzips it using unzip utility and extracts to temporary file ---------------- #
 sub init {
 	qx(if [ ! -f $file ];
 		then 
@@ -28,6 +29,7 @@ sub init {
 			unzip $file -d /tmp/.odfcat;
 		fi;);
 	
+# ------------ Checks verbose setting as set by our flags and calls appropriate subroutine -------------- #
 	if($verbose == 2) {
 		&help();
 	}
@@ -39,11 +41,12 @@ sub init {
 	exit(0);
 }
 
+# ------------- TODO: Getopts help and how to use. ------------- #
 sub help {
 	
 }
 
-
+# ------------- Uses XML::Simple on the two main content and information schema files in odf to parse necessary information and print - how much depending on verbosity -------------- #
 sub main {
 	my $xml = XMLin("/tmp/.odfcat/meta.xml");	
 	my $content = XMLin("/tmp/.odfcat/content.xml");
@@ -64,6 +67,7 @@ sub main {
 		print "Page Count :: " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:page-count'} . "\n";
 		print "Character Count :: " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:character-count'} . "\n";
 		
+# -------------- Content printing is available, but not recommended for large documents --------------- #		
 		print "Print content? [Y/n]: ";
 		my $in = <STDIN>;
 		if ($in eq "Y") {
