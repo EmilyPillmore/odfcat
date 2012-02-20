@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/perl
 use warnings; 
 use strict;
 use XML::Simple;
@@ -6,19 +6,17 @@ use Getopt::Long;
 use Pod::Usage;
 
 $|++;
-our $verbose = 0;
-our $result = GetOptions ("quiet" => \$verbose,
+my $verbose = 0;
+my ($help, $man);
+Getopt::Long::GetOptions ("quiet" => \$verbose,
 			  "verbose" => sub{$verbose = 1;},
-			  "help" => sub{$verbose = 2;},
-  			  "man" => sub{$verbose = 3;});
-						  
-our $file = $ARGV[0];
-if($verbose > 1) {
-	&help();
-}
-else {
-	&init();
-}
+			  "help" => \$help,
+			  "man" => \$man);
+						  			
+Pod::Usage::pod2usage( -verbose => 1 ) if ($help);
+Pod::Usage::pod2usage( -verbose => 2 ) if ($man);	  
+
+my $file = $ARGV[0];
 
 # ------------ Fetches file and checks to make sure it exists, then Unzips it using unzip utility and extracts to temporary directory ---------------- #
 
@@ -46,17 +44,6 @@ sub init {
 	print "\n$0 :: Finished!\n";
 	qx(/bin/rm -rf /tmp/.odfcat;);
 	exit(0);
-}
-
-# ------------- Man and help calls -------------- #
-
-sub help {
-	if ($verbose == 2) {
-		Pod::Usage::pod2usage();
-	}
-	else {
-		Pod::Usage::pod2usage(-verbose => 2);
-	}
 }
 
 # ------------- Uses XML::Simple on the two main content and information schema files in odf to parse necessary information and print - how much depending on verbosity -------------- #
@@ -131,4 +118,3 @@ This program is distributed under the SHUT UP AND TAKE MY MONEY license.
 19-2-2012
 
 =cut
-
