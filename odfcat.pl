@@ -29,13 +29,14 @@ sub init {
 			unzip $file -d /tmp/.odfcat;
 		fi;);
 	
-# ------------ Checks verbose setting as set by our flags and calls appropriate subroutine -------------- #
+# ------------ Checks verbose setting as set by our flags and calls appropriate subroutine ------------- #
 	if($verbose == 2) {
 		&help();
 	}
 	else {
 		&main();
 	}
+# ------------ Cleanup and exit ------------- #	
 	print "\nodfcat :: Finished!\n";
 	qx(/bin/rm -rf /tmp/.odfcat;);
 	exit(0);
@@ -59,7 +60,7 @@ sub main {
 		print "Word Count :: " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'} . "\n";
 	}
 	else {
-	print "Version :: " . $xml->{'office:version'} . "\n";
+		print "Version :: " . $xml->{'office:version'} . "\n";
 		print "\nCreator :: " . $xml->{'office:meta'}->{'meta:initial-creator'} . "\n";
 		print "Creation Date :: " . $xml->{'office:meta'}->{'dc:date'} . "\n";
 		print "Last Edited :: " . $xml->{'office:meta'}->{'meta:editing-duration'} . "\n";
