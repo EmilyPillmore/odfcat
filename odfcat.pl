@@ -14,7 +14,7 @@ my $file = $ARGV[0];
 print 'odfcat::Fetching - ' . $file . "\n";
 &init();
 
-# ------------ Fetches file and checks to make sure it exists, then Unzips it using unzip utility and extracts to temporary file ---------------- #
+# ------------ Fetches file and checks to make sure it exists, then Unzips it using unzip utility and extracts to temporary directory ---------------- #
 sub init {
 	qx(if [ ! -f $file ];
 		then 
