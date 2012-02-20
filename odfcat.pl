@@ -45,10 +45,6 @@ sub init {
 	exit(0);
 }
 
-sub tolog {
-	print shift () . "\n";
-}
-
 sub help {
 	
 }
@@ -75,7 +71,8 @@ sub verbose {
 	print "Character Count :: " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:character-count'} . "\n";
 	
 	print "Print content? [Y/n]: ";
-	if (<STDIN> eq "Y") {
+	my $in = <STDIN>;
+	if ($in eq "Y") {
 		print "Printing Content :: \n" . $content->{'office:body'}->{'office:text'}->{'text:p'}->{'content'} . "\n";
 	}
 	else {return};
