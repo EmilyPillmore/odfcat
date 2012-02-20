@@ -12,26 +12,22 @@ print 'odfcat::Fetching - ' . $file . "\n";
 sub init {
 	qx(if [ ! -f $file ];
 		then 
-			echo 'odfcat :: File not found!';
+			echo odfcat :: File not found!;
 		else
-			echo odfcat :: Extracting contents ... 
+			echo odfcat :: Extracting contents ... ;
 			if [ ! -d /tmp/.odfcat ];
 			 then
 				mkdir /tmp/.odfcat;
-				echo odfcat :: Unzipping contents ... 
+				echo odfcat :: Unzipping contents ... ;
 				unzip $file -d /tmp/.odfcat/;
 			fi;
 			
-			echo odfcat:: Unzipping contents ... 
+			echo odfcat:: Unzipping contents ... ;
 			unzip $file -d /tmp/.odfcat;
 		fi;);
 		
-	my %xml = \&main();
-	for my $keys (keys %xml) {
-		print "$keys -> $xml{$keys}\n";
-	}
-	qx(rm -rf /home/.odfcat;);
-	print "odfcat :: Finished!\n";
+	&verbose();
+	qx(rm -rf /tmp/.odfcat;);
 	exit(0);
 }
 
@@ -43,17 +39,23 @@ sub help {
 	
 }
 
-sub main {
-	my $file = "/tmp/.odfcat/meta.xml";
-	my $xml = XMLin($file);	
-	my %xmlin = ("version" => $xml->{'office:meta'}->{'meta:generator'} . $xml->{'office:version'},
-			   "creator"  => $xml->{'office:meta'}->{'meta:initial-creator'},
-			   "cdate" => $xml->{'office:meta'}->{'dc:date'},
-			   "edited" => $xml->{'office:meta'}->{'meta:editing-duration'},
-			   "wcount" => $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'},
-			   "pcount" => $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:page-count'},
-			   "ccount" => $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:character-count'},
-			   "content" => $xml->{'office:body'}->{'office:text'}->{'text:p'}->{content},
-			);
-	return $xmlin;
+sub verbose {
+	my $xml = XMLin("/tmp/.odfcat/meta.xml");	
+	my $content = XMLin("/tmp/.odfcat/content.xml");
+	
+	print "Version - " . $xml->{'office:meta'}->{'meta:generator'} . " " . $xml->{'office:version'} . "\n";
+	print "Creator - " . $xml->{'office:meta'}->{'meta:initial-creator'} . "\n";
+	print "Creation Date - " . $xml->{'office:meta'}->{'dc:date'} . "\n";
+	print "Last Edited - " . $xml->{'office:meta'}->{'meta:editing-duration'} . "\n";
+	print "Word Count - " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'} . "\n";
+	print "Page Count - " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:page-count'} . "\n";
+	print "Character Count - " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:character-count'} . "\n";
+	
+	print "Print content? [Y/n]: ";
+	if (<STDIN> =~ /(Y|y|yes|Yes|YEs|YES|)/i) {
+		print "Printing Content - " . $content->{'office:body'}->{'office:text'}->{'text:p'}->{'content'} . "\n";
+	}
+	else {
+		print "odfcat :: Finished!";
+	}
 }
