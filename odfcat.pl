@@ -71,6 +71,7 @@ sub main {
 # -------------- Content printing is available, but not recommended for large documents --------------- #		
 		print "Print content? [Y/n]: ";
 		my $in = <STDIN>;
+		chomp $in;
 		if ($in eq "Y") {
 			print "Printing Content :: \n" . $content->{'office:body'}->{'office:text'}->{'text:p'}->{'content'} . "\n";
 		}
