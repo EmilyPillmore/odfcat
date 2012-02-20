@@ -1,9 +1,9 @@
 #!/usr/local/bin/perl
 use warnings; 
+use strict;
 use XML::Simple;
 use Getopt::Long;
 use Pod::Usage;
-use Switch;
 
 $|++;
 our $verbose = 0;
