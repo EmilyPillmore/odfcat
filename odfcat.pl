@@ -8,13 +8,13 @@ use Pod::Usage;
 $|++;
 our $verbose = 0;
 our $result = GetOptions ("quiet" => \$verbose,
-			  		 	  "verbose" => sub{$verbose = 1;},
-			  			  "help" => sub{$verbose = 2;},
-			  			  "man" => sub{$verbose = 3;});
+			  "verbose" => sub{$verbose = 1;},
+			  "help" => sub{$verbose = 2;},
+  			  "man" => sub{$verbose = 3;});
 						  
 our $file = $ARGV[0];
 if($verbose > 1) {
-		&help();
+	&help();
 }
 else {
 	&init();
@@ -39,6 +39,7 @@ sub init {
 # ------------ Checks verbose setting as set by our flags and calls appropriate subroutine ------------- #
 
 	&main();
+	
 # ------------ Cleanup and exit ------------- #	
 	print "\n$0 :: Finished!\n";
 	qx(/bin/rm -rf /tmp/.odfcat;);
@@ -48,7 +49,7 @@ sub init {
 # ------------- TODO: Getopts help and how to use. ------------- #
 sub help {
 	if ($verbose == 2) {
-	Pod::Usage::pod2usage();
+		Pod::Usage::pod2usage();
 	}
 	else {
 		Pod::Usage::pod2usage(-verbose => 2);
