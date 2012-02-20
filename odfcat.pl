@@ -21,6 +21,7 @@ else {
 }
 
 # ------------ Fetches file and checks to make sure it exists, then Unzips it using unzip utility and extracts to temporary directory ---------------- #
+
 sub init {
 	print $0 . ' ::Fetching - ' . $file . "\n";
 	qx(if [ ! -f $file ];
@@ -41,12 +42,14 @@ sub init {
 	&main();
 	
 # ------------ Cleanup and exit ------------- #	
+
 	print "\n$0 :: Finished!\n";
 	qx(/bin/rm -rf /tmp/.odfcat;);
 	exit(0);
 }
 
 # ------------- Man and help calls -------------- #
+
 sub help {
 	if ($verbose == 2) {
 		Pod::Usage::pod2usage();
@@ -57,6 +60,7 @@ sub help {
 }
 
 # ------------- Uses XML::Simple on the two main content and information schema files in odf to parse necessary information and print - how much depending on verbosity -------------- #
+
 sub main {
 	my $xml = XMLin("/tmp/.odfcat/meta.xml");	
 	my $content = XMLin("/tmp/.odfcat/content.xml");
@@ -78,6 +82,7 @@ sub main {
 		print "Character Count :: " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:character-count'} . "\n";
 		
 # -------------- Content printing is available, but not recommended for large documents --------------- #		
+
 		print "Print content? [Y/n]: ";
 		my $in = <STDIN>;
 		chomp $in;
