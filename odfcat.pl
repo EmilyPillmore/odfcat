@@ -46,7 +46,7 @@ sub init {
 	exit(0);
 }
 
-# ------------- TODO: Getopts help and how to use. ------------- #
+# ------------- Man and help calls -------------- #
 sub help {
 	if ($verbose == 2) {
 		Pod::Usage::pod2usage();
