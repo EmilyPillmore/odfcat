@@ -22,26 +22,20 @@ sub init {
 			if [ ! -d /tmp/.odfcat ];
 			 then
 				mkdir /tmp/.odfcat;
-				unzip -o $file -d /tmp/.odfcat/;
+				unzip $file -d /tmp/.odfcat/;
 			fi;
 			
-			unzip -o $file -d /tmp/.odfcat;
+			unzip $file -d /tmp/.odfcat;
 		fi;);
 	
-	switch($verbose) {
-		case 0 {
-			&quiet();
-		}
-		case 1 {
-			&verbose();
-		}
-		case  2 {
-			&help();
-		}
-		
+	if($verbose == 2) {
+		&help();
+	}
+	else {
+		&main();
 	}
 	print "\nodfcat :: Finished!\n";
-	qx(rm -rf /tmp/.odfcat;);
+	qx(/bin/rm -rf /tmp/.odfcat;);
 	exit(0);
 }
 
@@ -49,31 +43,32 @@ sub help {
 	
 }
 
-sub quiet {
-	
-	my $xml = XMLin("/tmp/.odfcat/meta.xml");
-	print "\nCreator :: " . $xml->{'office:meta'}->{'meta:initial-creator'} . "\n";
-	print "Creation Date :: " . $xml->{'office:meta'}->{'dc:date'} . "\n";
-	print "Last Edited :: " . $xml->{'office:meta'}->{'meta:editing-duration'} . "\n";
-	print "Word Count :: " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'} . "\n";
-}
 
-sub verbose {
+sub main {
 	my $xml = XMLin("/tmp/.odfcat/meta.xml");	
 	my $content = XMLin("/tmp/.odfcat/content.xml");
 	
-	print "Version :: " . $xml->{'office:version'} . "\n";
-	print "\nCreator :: " . $xml->{'office:meta'}->{'meta:initial-creator'} . "\n";
-	print "Creation Date :: " . $xml->{'office:meta'}->{'dc:date'} . "\n";
-	print "Last Edited :: " . $xml->{'office:meta'}->{'meta:editing-duration'} . "\n";
-	print "Word Count :: " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'} . "\n";
-	print "Page Count :: " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:page-count'} . "\n";
-	print "Character Count :: " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:character-count'} . "\n";
-	
-	print "Print content? [Y/n]: ";
-	my $in = <STDIN>;
-	if ($in eq "Y") {
-		print "Printing Content :: \n" . $content->{'office:body'}->{'office:text'}->{'text:p'}->{'content'} . "\n";
+	if ($verbose == 0) {
+		print "Version :: " . $xml->{'office:version'} . "\n";
+		print "\nCreator :: " . $xml->{'office:meta'}->{'meta:initial-creator'} . "\n";
+		print "Creation Date :: " . $xml->{'office:meta'}->{'dc:date'} . "\n";
+		print "Last Edited :: " . $xml->{'office:meta'}->{'meta:editing-duration'} . "\n";
+		print "Word Count :: " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'} . "\n";
 	}
-	else {return};
+	else {
+	print "Version :: " . $xml->{'office:version'} . "\n";
+		print "\nCreator :: " . $xml->{'office:meta'}->{'meta:initial-creator'} . "\n";
+		print "Creation Date :: " . $xml->{'office:meta'}->{'dc:date'} . "\n";
+		print "Last Edited :: " . $xml->{'office:meta'}->{'meta:editing-duration'} . "\n";
+		print "Word Count :: " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'} . "\n";	
+		print "Page Count :: " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:page-count'} . "\n";
+		print "Character Count :: " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:character-count'} . "\n";
+		
+		print "Print content? [Y/n]: ";
+		my $in = <STDIN>;
+		if ($in eq "Y") {
+			print "Printing Content :: \n" . $content->{'office:body'}->{'office:text'}->{'text:p'}->{'content'} . "\n";
+		}
+		else {return};
+	}
 }
