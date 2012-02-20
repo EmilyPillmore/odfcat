@@ -53,15 +53,15 @@ sub main {
 	my $content = XMLin("/tmp/.odfcat/content.xml");
 	
 	if ($verbose == 0) {
-		print "Version :: " . $xml->{'office:version'} . "\n";
-		print "\nCreator :: " . $xml->{'office:meta'}->{'meta:initial-creator'} . "\n";
+		print "\nVersion :: " . $xml->{'office:version'} . "\n";
+		print "Creator :: " . $xml->{'office:meta'}->{'meta:initial-creator'} . "\n";
 		print "Creation Date :: " . $xml->{'office:meta'}->{'dc:date'} . "\n";
 		print "Last Edited :: " . $xml->{'office:meta'}->{'meta:editing-duration'} . "\n";
 		print "Word Count :: " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'} . "\n";
 	}
 	else {
-		print "Version :: " . $xml->{'office:version'} . "\n";
-		print "\nCreator :: " . $xml->{'office:meta'}->{'meta:initial-creator'} . "\n";
+		print "\nVersion :: " . $xml->{'office:version'} . "\n";
+		print "Creator :: " . $xml->{'office:meta'}->{'meta:initial-creator'} . "\n";
 		print "Creation Date :: " . $xml->{'office:meta'}->{'dc:date'} . "\n";
 		print "Last Edited :: " . $xml->{'office:meta'}->{'meta:editing-duration'} . "\n";
 		print "Word Count :: " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'} . "\n";	
