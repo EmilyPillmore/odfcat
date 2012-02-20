@@ -9,18 +9,19 @@ $|++;
 my $verbose = 0;
 my ($help, $man);
 Getopt::Long::GetOptions ("quiet" => \$verbose,
-			  "verbose" => sub{$verbose = 1;},
-			  "help" => \$help,
-			  "man" => \$man);
+						  "verbose" => sub{$verbose = 1;},
+						  "help" => \$help,
+						  "man" => \$man);
 						  			
 Pod::Usage::pod2usage( -verbose => 1 ) if ($help);
 Pod::Usage::pod2usage( -verbose => 2 ) if ($man);	  
 
-my $file = $ARGV[0];
+&init($ARGV[0]);
 
 # ------------ Fetches file and checks to make sure it exists, then Unzips it using unzip utility and extracts to temporary directory ---------------- #
 
-sub init {
+sub init() {
+	my $file = shift;
 	print $0 . ' ::Fetching - ' . $file . "\n";
 	qx(if [ ! -f $file ];
 		then 
@@ -72,9 +73,9 @@ sub main {
 
 		print "Print content? [Y/n]: ";
 		my $in = <STDIN>;
-		chomp $in;
+		chomp($in);
 		if ($in eq "Y") {
-			print "Printing Content :: \n" . $content->{'office:body'}->{'office:text'}->{'text:p'}->{'content'} . "\n";
+			print "Printing Content :: \n\t" . $content->{'office:body'}->{'office:text'}->{'text:p'}->{'content'} . "\n";
 		}
 		else {return};
 	}
