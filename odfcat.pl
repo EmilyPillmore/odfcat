@@ -53,7 +53,7 @@ sub verbose {
 	
 	print "Print content? [Y/n]: ";
 	if (<STDIN> =~ /(Y|y|yes|Yes|YEs|YES|)/i) {
-		print "Printing Content - " . $content->{'office:body'}->{'office:text'}->{'text:p'}->{'content'} . "\n";
+		print "Printing Content - \n \n" . $content->{'office:body'}->{'office:text'}->{'text:p'}->{'content'} . "\n";
 	}
 	else {
 		print "odfcat :: Finished!";
