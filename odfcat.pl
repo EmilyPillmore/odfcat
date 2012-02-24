@@ -32,7 +32,6 @@ qx(if [ ! -f $file ];
 			unzip $file -d /tmp/.odfcat/
 	fi);
 	
-# Checks verbose setting as set by our flags and calls appropriate subroutine 
 main();
 	
 # Cleanup and exit
@@ -61,8 +60,7 @@ sub main {
 		print "Page Count :: " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:page-count'} . "\n";
 		print "Character Count :: " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:character-count'} . "\n";
 		
-# -------------- Content printing is available, but not recommended for large documents --------------- #		
-
+# Content printing is available, but not recommended for large documents		
 		print "Print content? [Y/n]: ";
 		chomp(my $in = <STDIN>);
 		if ($in eq "Y") {
