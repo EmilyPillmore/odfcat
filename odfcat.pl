@@ -6,49 +6,41 @@ use Getopt::Long;
 use Pod::Usage;
 
 $|++;
-my $verbose = 0;
+my $verbose = '';
 my ($help, $man);
-Getopt::Long::GetOptions ( "quiet" => \$verbose,
-			   "verbose" => sub{$verbose = 1;},
-			   "help" => \$help,
-			   "man" => \$man );
+Getopt::Long::GetOptions ("quiet" => \$verbose,
+						  "verbose" => sub{$verbose = 1;},
+						  "help" => \$help,
+						  "man" => \$man);
 						  			
 Pod::Usage::pod2usage( -verbose => 1 ) if ($help);
 Pod::Usage::pod2usage( -verbose => 2 ) if ($man);	  
 
-&init($ARGV[0]);
-
-# ------------ Fetches file and checks to make sure it exists, then Unzips it using unzip utility and extracts to temporary directory ---------------- #
-
-sub init() {
-	my $file = shift;
-	print $0 . ' ::Fetching - ' . $file . "\n";
-	qx(if [ ! -f $file ];
-		then 
-			echo odfcat :: File not found!;
-		else
-			if [ ! -d /tmp/.odfcat ];
-			 then
-				mkdir /tmp/.odfcat;
-				unzip $file -d /tmp/.odfcat/;
-			fi;
-			
-			unzip $file -d /tmp/.odfcat;
-		fi;);
+# Fetches file and checks to make sure it exists, then Unzips it using unzip utility and extracts to temporary directory
+my $file = $ARGV[0];
+print $0 . ' :: Fetching - ' . $file . "\n";
 	
-# ------------ Checks verbose setting as set by our flags and calls appropriate subroutine ------------- #
-
-	&main();
+qx(if [ ! -f $file ];
+	then 
+		echo "$0 :: File not found!"
+	else
+		if [ ! -d /tmp/.odfcat/ ];
+		 then
+			mkdir /tmp/.odfcat/
+			unzip $file -d /tmp/.odfcat/
+		fi	
+			unzip $file -d /tmp/.odfcat/
+	fi);
 	
-# ------------ Cleanup and exit ------------- #	
+# Checks verbose setting as set by our flags and calls appropriate subroutine 
+main();
+	
+# Cleanup and exit
+print "\n$0 :: Finished!\n";
+qx(/bin/rm -rf /tmp/.odfcat;);
+return 0;
 
-	print "\n$0 :: Finished!\n";
-	qx(/bin/rm -rf /tmp/.odfcat;);
-	exit(0);
-}
-
-# ------------- Uses XML::Simple on the two main content and information schema files in odf to parse necessary information and print - how much depending on verbosity -------------- #
-
+# Uses XML::Simple on the two main content and information schema files in odf to parse necessary information and print - how much depending on verbosity
 sub main {
 	my $xml = XMLin("/tmp/.odfcat/meta.xml");	
 	my $content = XMLin("/tmp/.odfcat/content.xml");
