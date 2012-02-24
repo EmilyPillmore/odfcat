@@ -38,7 +38,7 @@ main();
 # Cleanup and exit
 print "\n$0 :: Finished!\n";
 qx(/bin/rm -rf /tmp/.odfcat;);
-return 0;
+exit 0;
 
 # Uses XML::Simple on the two main content and information schema files in odf to parse necessary information and print - how much depending on verbosity
 sub main {
