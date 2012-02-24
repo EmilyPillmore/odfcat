@@ -6,7 +6,7 @@ use Getopt::Long;
 use Pod::Usage;
 
 $|++;
-my $verbose = '';
+my $verbose;
 my ($help, $man);
 Getopt::Long::GetOptions ("quiet" => \$verbose,
 						  "verbose" => sub{$verbose = 1;},
@@ -36,7 +36,7 @@ main();
 	
 # Cleanup and exit
 print "\n$0 :: Finished!\n";
-qx(/bin/rm -rf /tmp/.odfcat;);
+qx(/bin/rm -rf /tmp/.odfcat);
 exit 0;
 
 # Uses XML::Simple on the two main content and information schema files in odf to parse necessary information and print - how much depending on verbosity
