@@ -9,9 +9,9 @@ $|++;
 my $verbose;
 my ($help, $man);
 Getopt::Long::GetOptions ("quiet" => \$verbose,
-						  "verbose" => sub{$verbose = 1;},
-						  "help" => \$help,
-						  "man" => \$man);
+			  "verbose" => sub{$verbose = 1;},
+			  "help" => \$help,
+			  "man" => \$man);
 						  			
 Pod::Usage::pod2usage( -verbose => 1 ) if ($help);
 Pod::Usage::pod2usage( -verbose => 2 ) if ($man);	  
