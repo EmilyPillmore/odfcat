@@ -8,9 +8,9 @@ use Pod::Usage;
 $|++;
 my $verbose;
 Getopt::Long::GetOptions ( "quiet" => \$verbose,
-						   "verbose" => sub{ $verbose = 1; },
-						   "help" => \my $help,
-						   "man" => \my $man );
+			   "verbose" => sub{ $verbose = 1; },
+			   "help" => \my $help,
+			   "man" => \my $man );
 						  			
 Pod::Usage::pod2usage( -verbose => 1 ) if $help;
 Pod::Usage::pod2usage( -verbose => 2 ) if $man;	  
@@ -56,7 +56,9 @@ sub main {
 		if ($in eq "Y") {
 			print "Printing Content :: \n\t$content->{'office:body'}->{'office:text'}->{'text:p'}->{'content'}\n";
 		}
-		else {return};
+		else {
+			return;
+		}
 	}
 #cleanup of unnecessary local variables
 	undef $xml, $content, $verbose;
@@ -100,4 +102,3 @@ This program is distributed under the SHUT UP AND TAKE MY MONEY license.
 19-2-2012
 
 =cut
-
