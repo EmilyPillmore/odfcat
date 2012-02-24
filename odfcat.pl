@@ -45,26 +45,16 @@ sub main {
 	my $content = XMLin("/tmp/.odfcat/content.xml");
 	
 	if ( ! $verbose == 1) {
-		print "\nVersion :: " . $xml->{'office:version'} . "\n";
-		print "Creator :: " . $xml->{'office:meta'}->{'meta:initial-creator'} . "\n";
-		print "Creation Date :: " . $xml->{'office:meta'}->{'dc:date'} . "\n";
-		print "Last Edited :: " . $xml->{'office:meta'}->{'meta:editing-duration'} . "\n";
-		print "Word Count :: " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'} . "\n";
+		print "\nVersion :: $xml->{'office:version'}\nCreator :: $xml->{'office:meta'}->{'meta:initial-creator'}\nCreation Date :: $xml->{'office:meta'}->{'dc:date'}\nLast Edited :: $xml->{'office:meta'}->{'meta:editing-duration'}\nWord Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'}\n";
 	}
 	else {
-		print "\nVersion :: " . $xml->{'office:version'} . "\n";
-		print "Creator :: " . $xml->{'office:meta'}->{'meta:initial-creator'} . "\n";
-		print "Creation Date :: " . $xml->{'office:meta'}->{'dc:date'} . "\n";
-		print "Last Edited :: " . $xml->{'office:meta'}->{'meta:editing-duration'} . "\n";
-		print "Word Count :: " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'} . "\n";	
-		print "Page Count :: " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:page-count'} . "\n";
-		print "Character Count :: " . $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:character-count'} . "\n";
+		print "\nVersion :: $xml->{'office:version'}\nCreator :: $xml->{'office:meta'}->{'meta:initial-creator'}\nCreation Date :: $xml->{'office:meta'}->{'dc:date'}\nLast Edited :: $xml->{'office:meta'}->{'meta:editing-duration'}\nWord Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'}\nPage Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:page-count'}\nCharacter Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:character-count'}\n";
 		
 # Content printing is available, but not recommended for large documents 
-		print "Print content? [Y/n]: ";
+		print "\nPrint content? [Y/n]: ";
 		chomp(my $in = <STDIN>);
 		if ($in eq "Y") {
-			print "Printing Content :: \n\t" . $content->{'office:body'}->{'office:text'}->{'text:p'}->{'content'} . "\n";
+			print "Printing Content :: \n\t$content->{'office:body'}->{'office:text'}->{'text:p'}->{'content'}\n";
 		}
 		else {return};
 	}
@@ -110,3 +100,4 @@ This program is distributed under the SHUT UP AND TAKE MY MONEY license.
 19-2-2012
 
 =cut
+
