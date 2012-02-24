@@ -17,20 +17,21 @@ Pod::Usage::pod2usage( -verbose => 1 ) if ($help);
 Pod::Usage::pod2usage( -verbose => 2 ) if ($man);	  
 
 # Fetches file and checks to make sure it exists, then Unzips it using unzip utility and extracts to temporary directory
+@ARGV or Pod::Usage::pod2usage( -verbose => 1 );
 my $file = $ARGV[0];
 print $0 . ' :: Fetching - ' . $file . "\n";
 	
 qx(if [ ! -f $file ];
-	then 
-		echo "$0 :: File not found!"
-	else
-		if [ ! -d /tmp/.odfcat/ ];
-		 then
-			mkdir /tmp/.odfcat/
-			unzip $file -d /tmp/.odfcat/
-		fi	
-			unzip $file -d /tmp/.odfcat/
-	fi);
+    then 
+	echo "$0 :: File not found!"
+    else
+	if [ ! -d /tmp/.odfcat/ ];
+	 then
+		mkdir /tmp/.odfcat/
+		unzip $file -d /tmp/.odfcat/
+	fi	
+	unzip $file -d /tmp/.odfcat/
+   fi);
 	
 main();
 	
