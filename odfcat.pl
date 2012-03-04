@@ -50,8 +50,7 @@ sub main {
 		
 # Content printing is available, but not recommended for large documents 
 	print "\nPrint content? [Y/n]: ";
-	chomp(my $in = <STDIN>);
-	$in =~/[yY]/
+	<STDIN> =~/[yY]/
 		? print "Printing Content :: \n\t$content->{'office:body'}->{'office:text'}->{'text:p'}->{'content'}\n"
 		: return;
 #cleanup of unnecessary local variables
