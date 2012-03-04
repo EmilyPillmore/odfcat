@@ -8,9 +8,9 @@ use Pod::Usage;
 $|++;
 my $verbose;
 Getopt::Long::GetOptions ( "quiet" => \$verbose,
-			   "verbose" => sub{ $verbose = 1; },
-			   "help" => \my $help,
-			   "man" => \my $man );
+						   "verbose" => sub{ $verbose = 1; },
+						   "help" => \my $help,
+						   "man" => \my $man );
 						  			
 Pod::Usage::pod2usage( -verbose => 1 ) if $help;
 Pod::Usage::pod2usage( -verbose => 2 ) if $man;	  
@@ -44,22 +44,16 @@ sub main {
 	my $xml = XMLin("/tmp/.odfcat/meta.xml");	
 	my $content = XMLin("/tmp/.odfcat/content.xml");
 	
-	if ( ! $verbose == 1) {
-		print "\nVersion :: $xml->{'office:version'}\nCreator :: $xml->{'office:meta'}->{'meta:initial-creator'}\nCreation Date :: $xml->{'office:meta'}->{'dc:date'}\nLast Edited :: $xml->{'office:meta'}->{'meta:editing-duration'}\nWord Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'}\n";
-	}
-	else {
-		print "\nVersion :: $xml->{'office:version'}\nCreator :: $xml->{'office:meta'}->{'meta:initial-creator'}\nCreation Date :: $xml->{'office:meta'}->{'dc:date'}\nLast Edited :: $xml->{'office:meta'}->{'meta:editing-duration'}\nWord Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'}\nPage Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:page-count'}\nCharacter Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:character-count'}\n";
+    !$verbose == 1
+		? return print "\nVersion :: $xml->{'office:version'}\nCreator :: $xml->{'office:meta'}->{'meta:initial-creator'}\nCreation Date :: $xml->{'office:meta'}->{'dc:date'}\nLast Edited :: $xml->{'office:meta'}->{'meta:editing-duration'}\nWord Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'}\n"
+		: print "\nVersion :: $xml->{'office:version'}\nCreator :: $xml->{'office:meta'}->{'meta:initial-creator'}\nCreation Date :: $xml->{'office:meta'}->{'dc:date'}\nLast Edited :: $xml->{'office:meta'}->{'meta:editing-duration'}\nWord Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'}\nPage Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:page-count'}\nCharacter Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:character-count'}\n";
 		
 # Content printing is available, but not recommended for large documents 
-		print "\nPrint content? [Y/n]: ";
-		chomp(my $in = <STDIN>);
-		if ($in eq "Y" or "y") {
-			print "Printing Content :: \n\t$content->{'office:body'}->{'office:text'}->{'text:p'}->{'content'}\n";
-		}
-		else {
-			return;
-		}
-	}
+	print "\nPrint content? [Y/n]: ";
+	chomp(my $in = <STDIN>);
+	$in =~/[yY]/
+		? print "Printing Content :: \n\t$content->{'office:body'}->{'office:text'}->{'text:p'}->{'content'}\n"
+		: return;
 #cleanup of unnecessary local variables
 	undef $xml, $content, $verbose;
 }
