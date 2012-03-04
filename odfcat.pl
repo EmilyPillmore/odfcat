@@ -8,9 +8,9 @@ use Pod::Usage;
 $|++;
 my $verbose;
 Getopt::Long::GetOptions ( "quiet" => \$verbose,
-			   "verbose" => sub{ $verbose = 1; },
-			   "help" => \my $help,
-			   "man" => \my $man );
+						   "verbose" => sub{ $verbose = 1; },
+						   "help" => \my $help,
+						   "man" => \my $man );
 						  			
 Pod::Usage::pod2usage( -verbose => 1 ) if $help;
 Pod::Usage::pod2usage( -verbose => 2 ) if $man;	  
@@ -19,9 +19,10 @@ Pod::Usage::pod2usage( -verbose => 2 ) if $man;
 @ARGV or Pod::Usage::pod2usage( -verbose => 1 );
 my $file = $ARGV[0];
 
-print "$0 :: extracting - $file\n";
-! -e $file ? die "$0 :: File not found!"
- : ! -d '/tmp/.odfcat/'
+! -e $file 
+ ? die "$0 :: File not found!"
+ : print "$0 :: extracting - $file\n",
+ ! -d '/tmp/.odfcat/'
  	? mkdir '/tmp/.odfcat/',
 	  qx(unzip $file -d '/tmp/.odfcat/')
 	: qx(unzip $file -d '/tmp/.odfcat/');
@@ -89,4 +90,3 @@ This program is distributed under the SHUT UP AND TAKE MY MONEY license.
 19-2-2012
 
 =cut
-
