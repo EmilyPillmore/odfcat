@@ -45,7 +45,7 @@ sub main {
 		
 # Content printing is available, but not recommended for large documents 
 	print "\nPrint content? [Y/n]: ";
-	<STDIN> =~/[yY]/
+	<STDIN> =~ /^y\n/i
 		? print "Printing Content :: \n\t$content->{'office:body'}->{'office:text'}->{'text:p'}->{'content'}\n"
 		: return;
 
