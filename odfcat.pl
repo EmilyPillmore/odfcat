@@ -48,7 +48,7 @@ sub main {
 	<STDIN> =~/[yY]/
 		? print "Printing Content :: \n\t$content->{'office:body'}->{'office:text'}->{'text:p'}->{'content'}\n"
 		: return;
-#cleanup of unnecessary local variables
+
 	undef $xml, $content, $verbose;
 }
 __END__
