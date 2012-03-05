@@ -24,8 +24,8 @@ my $file = $ARGV[0];
  : print "$0 :: extracting - $file\n",
  ! -d '/tmp/.odfcat'
  	? qx(mkdir /tmp/.odfcat/ &&
-	  unzip $file -d '/tmp/.odfcat/')
-	: qx(unzip $file -d '/tmp/.odfcat/');
+	  /usr/bin/unzip $file -d '/tmp/.odfcat/')
+	: qx(/usr/bin/unzip $file -d '/tmp/.odfcat/');
 
 main();
 	
