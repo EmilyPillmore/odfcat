@@ -22,9 +22,9 @@ my $file = $ARGV[0];
 ! -e $file 
  ? die "$0 :: File not found!"
  : print "$0 :: extracting - $file\n",
- ! -d '/tmp/.odfcat/'
- 	? mkdir '/tmp/.odfcat/',
-	  qx(unzip $file -d '/tmp/.odfcat/')
+ ! -d '/tmp/.odfcat'
+ 	? qx(mkdir /tmp/.odfcat/ &&
+	  unzip $file -d '/tmp/.odfcat/')
 	: qx(unzip $file -d '/tmp/.odfcat/');
 
 main();
@@ -39,7 +39,7 @@ sub main {
 	my $xml = XMLin("/tmp/.odfcat/meta.xml");	
 	my $content = XMLin("/tmp/.odfcat/content.xml");
 	
-    !$verbose == 1
+        !$verbose == 1
 		? return print "\nVersion :: $xml->{'office:version'}\nCreator :: $xml->{'office:meta'}->{'meta:initial-creator'}\nCreation Date :: $xml->{'office:meta'}->{'dc:date'}\nLast Edited :: $xml->{'office:meta'}->{'meta:editing-duration'}\nWord Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'}\n"
 		: print "\nVersion :: $xml->{'office:version'}\nCreator :: $xml->{'office:meta'}->{'meta:initial-creator'}\nCreation Date :: $xml->{'office:meta'}->{'dc:date'}\nLast Edited :: $xml->{'office:meta'}->{'meta:editing-duration'}\nWord Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'}\nPage Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:page-count'}\nCharacter Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:character-count'}\n";
 		
