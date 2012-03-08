@@ -21,16 +21,13 @@ Pod::Usage::pod2usage( -verbose => 2 ) if $man;
 @ARGV or Pod::Usage::pod2usage( -verbose => 1 );
 my $file = $ARGV[0];
 
-if(! -e $file) {
-  	die "$0 :: File not found!"
-}
-else {
-	print "$0 :: extracting - $file\n";
- 	! -d '/tmp/.odfcat'
+die "$0 :: File not found!" unless -e $file;
+print "$0 :: extracting - $file\n";
+	! -d '/tmp/.odfcat'
  		? qx(mkdir /tmp/.odfcat/ &&
 	  	unzip $file -d '/tmp/.odfcat/')
 		: qx(unzip $file -d '/tmp/.odfcat/');
-}
+
 $flag ? as_xml() : main();
 	
 # Cleanup and exit
