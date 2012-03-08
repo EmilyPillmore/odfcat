@@ -8,11 +8,11 @@ use Pod::Usage;
 $|++;
 my $verbose;
 Getopt::Long::GetOptions ( "quiet" => \$verbose,
-		  	   "verbose" => sub{ $verbose = 1; },
+		  	   "verbose" => sub{ \$verbose = 1; },
 			   "file=s" => my $output,
 			   "as-xml" => my $flag,
-			   "help" => \my $help,
-			   "man" => \my $man );
+			   "help" => my $help,
+			   "man" => my $man );
 						  			
 Pod::Usage::pod2usage( -verbose => 1 ) if $help;
 Pod::Usage::pod2usage( -verbose => 2 ) if $man;
