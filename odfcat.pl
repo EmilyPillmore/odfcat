@@ -7,9 +7,10 @@ use Pod::Usage;
 
 $|++;
 my $verbose;
+my $write_file = '';
 Getopt::Long::GetOptions ( "quiet" => \$verbose,
-		  	   "verbose" => sub{ \$verbose = 1; },
-			   "file=s" => my $output,
+		  	   "verbose" => sub{ $verbose = 1; },
+			   "file=s" => $write_file,
 			   "as-xml" => my $flag,
 			   "help" => my $help,
 			   "man" => my $man );
@@ -40,12 +41,12 @@ sub main {
 	my $xml = XMLin("/tmp/.odfcat/meta.xml");	
 	my $content = XMLin("/tmp/.odfcat/content.xml");
 	
-    	if($output) {
-    		open(OUTFILE, '>', $output) or die "$0 :: Could not open file. Does it exist, or does it not allow Write Access?";
+    if($write_file) {
+    	open(OUTFILE, '>', $write_file) or die "$0 :: Could not open file. Does it exist, or does it not allow Write Access?";
     		! $verbose == 1
-			? print OUTFILE "\nVersion :: $xml->{'office:version'}\nCreator :: $xml->{'office:meta'}->{'meta:initial-creator'}\nCreation Date :: $xml->{'office:meta'}->{'dc:date'}\nLast Edited :: $xml->{'office:meta'}->{'meta:editing-duration'}\nWord Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'}\n"
-			: print OUTFILE "\nVersion :: $xml->{'office:version'}\nCreator :: $xml->{'office:meta'}->{'meta:initial-creator'}\nCreation Date :: $xml->{'office:meta'}->{'dc:date'}\nLast Edited :: $xml->{'office:meta'}->{'meta:editing-duration'}\nWord Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'}\nPage Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:page-count'}\nCharacter Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:character-count'}\n";
-		close OUTFILE;
+				? print OUTFILE "\nVersion :: $xml->{'office:version'}\nCreator :: $xml->{'office:meta'}->{'meta:initial-creator'}\nCreation Date :: $xml->{'office:meta'}->{'dc:date'}\nLast Edited :: $xml->{'office:meta'}->{'meta:editing-duration'}\nWord Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'}\n"
+				: print OUTFILE "\nVersion :: $xml->{'office:version'}\nCreator :: $xml->{'office:meta'}->{'meta:initial-creator'}\nCreation Date :: $xml->{'office:meta'}->{'dc:date'}\nLast Edited :: $xml->{'office:meta'}->{'meta:editing-duration'}\nWord Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'}\nPage Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:page-count'}\nCharacter Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:character-count'}\n";
+			close OUTFILE;
 		return;
 	}
 	if( ! $verbose == 1) { 
@@ -55,25 +56,25 @@ sub main {
 		print "\nVersion :: $xml->{'office:version'}\nCreator :: $xml->{'office:meta'}->{'meta:initial-creator'}\nCreation Date :: $xml->{'office:meta'}->{'dc:date'}\nLast Edited :: $xml->{'office:meta'}->{'meta:editing-duration'}\nWord Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:word-count'}\nPage Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:page-count'}\nCharacter Count :: $xml->{'office:meta'}->{'meta:document-statistic'}->{'meta:character-count'}\n";
 		print "\nPrint content? [Y/n]: ";
 		<STDIN> =~ /^y\n/i
-			? print "Printing Content :: \n\t$content->{'office:body'}->{'office:text'}->{'text:p'}->{'content'}\n"
+			? return print "Printing Content :: \n\t$content->{'office:body'}->{'office:text'}->{'text:p'}->{'content'}\n"
 			: return;
 	}
-	#cleanup of unnecessary local variables
-	undef $xml, $content, $verbose, $output;
-	return;
 }
 
 sub as_xml { 
-	die "Please supply a file to write to if you want XML output." unless $output;
 	
-	my $xml = XMLin("/tmp/.odfcat/meta.xml");	
-	my $content = XMLin("/tmp/.odfcat/content.xml");
+	die "Please supply a file to write to if you want XML output." unless $write_file;
 	
-	open(OUTFILE, '>', $output);
-		print OUTFILE $xml;
-		print OUTFILE $content;
-	close OUTFILE;
-	return;
+	my $xml = "/tmp/.odfcat/meta.xml";	
+	my $content = "/tmp/.odfcat/content.xml";
+	
+	open my $output, '>>', $write_file;
+	print $output $xml;
+	
+	print "Would you like to print content as well? [Y/n] ";
+	<STDIN> =~ /^y\n/i
+			? print $output $content
+			: return;
 }	
 
 __END__
@@ -87,11 +88,13 @@ Odfcat - simple ODF parsing tool to display necessary information from Open Docu
 Use:
 
     odfcat [--help|man] 
-    odfcat [--verbose|-v] [file.odt]
+    odfcat [--verbose|-v|] [--file="example"] [file.odt]
+    odfcat [--as_xml] [--file="example"] [file.odt]
 
 Examples:
 
-    odfcat -v [file] | odfcat --verbose [file.odt]
+    odfcat -v [file.odt] odfcat --verbose [file.odt]
+    odfcat --as_xml --file="example" [file.odt]
     odfcat --help | --man
     
     Default quiet verbosity.
@@ -112,6 +115,6 @@ This program is distributed under the SHUT UP AND TAKE MY MONEY license.
 
 =head1 DATE
 
-19-2-2012
+17-3-2012
 
 =cut
