@@ -107,7 +107,7 @@ This script uses the XML::Simple module to parse Open Document files for basic i
 
 =head1 AUTHOR
 
-Wyatt Pillmore, E<lt>wpillmore@gmail.comE<gt>.
+Emily Pillmore, E<lt>emily.pillmore@gmail.comE<gt>.
 
 =head1 COPYRIGHT
 
